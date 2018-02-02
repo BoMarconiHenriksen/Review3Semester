@@ -12,13 +12,14 @@ public class ThreadDay1Ex1 {
     public static void main(String[] args) {
 
         Thread t1 = new Thread(() -> {
+           long sum = 0;
 
-            for (int i = 1; i < 5e4; i++) {
-                System.out.println("t1: " + i);
+            for (int i = 1; i < 5e10; i++) {
+                sum += i;
             }
+            System.out.println("t1: " + sum);
 
         });
-
 
         Thread t2 = new Thread(() -> {
             for (int i = 1; i < 6; i++) {
@@ -41,7 +42,7 @@ public class ThreadDay1Ex1 {
             while (System.currentTimeMillis() < endTime) {
 
                 for (int i = 10; isRunning == true; i++) {
-                 final int j = i;//Volatile eller synkronized ????
+                    final int j = i;//Volatile eller synkronized ????
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -54,7 +55,7 @@ public class ThreadDay1Ex1 {
                 }
             }
         });
-        
+
         //Når man laver en lamba refer ikke variable udefra
         //Kan rykke variablerne udfra main og gøre dem static
 //        Thread[] threads = new Thread[10];
@@ -69,7 +70,6 @@ public class ThreadDay1Ex1 {
 //        for (Thread t : threads) {
 //            t.start();
 //        }
-
         t1.start();
         t2.start();
         t3.start();

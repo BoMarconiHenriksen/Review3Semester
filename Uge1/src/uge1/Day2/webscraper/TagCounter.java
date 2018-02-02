@@ -16,6 +16,7 @@ public class TagCounter extends Thread {
   /*
   Connect to the URL and count the number of h1, h2, div and body Tags
   */
+  @Override
   public void run(){
     Document doc;
     try {
