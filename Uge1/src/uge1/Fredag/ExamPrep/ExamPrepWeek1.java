@@ -27,7 +27,8 @@ public class ExamPrepWeek1 {
         //De udregnede Fibonacci tal. s2
         ArrayBlockingQueue<Integer> producedNumbers = new ArrayBlockingQueue(12);
 
-        //
+        //Creates a thread pool that creates new threads as needed, 
+        //but will reuse previously constructed threads when they are available.
         ExecutorService es = Executors.newCachedThreadPool();
 
         //Laver og starter de 4 producere. P1 til P4
@@ -41,13 +42,14 @@ public class ExamPrepWeek1 {
         es.execute(consumer);
 
         es.shutdown();
+        
         try {
-            es.awaitTermination(5, TimeUnit.SECONDS);
-            System.out.println("Closing Down");
+            es.awaitTermination(10, TimeUnit.SECONDS);
+            System.out.println("Totalsummen er " + consumer.getTotalFibSum());
+            System.out.println("Closing Down. Wait 10 secounds...");
         } catch (InterruptedException e) {
             System.out.println("Fejl ved closing down i main");
         }
 
     }
-
 }

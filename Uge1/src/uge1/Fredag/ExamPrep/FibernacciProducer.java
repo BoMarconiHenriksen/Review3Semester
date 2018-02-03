@@ -1,7 +1,6 @@
 package uge1.Fredag.ExamPrep;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -11,6 +10,7 @@ public class FibernacciProducer implements Runnable {
 
     BlockingQueue<Integer> numbersToUse;
     BlockingQueue<Integer> producedNumbers;
+    private volatile boolean moreNumbersToFetch = true;
 
     public FibernacciProducer(BlockingQueue<Integer> numbersToUse, BlockingQueue<Integer> producedNumbers) {
         this.numbersToUse = numbersToUse;
@@ -20,13 +20,13 @@ public class FibernacciProducer implements Runnable {
     @Override
     public void run() {
 
-        boolean moreNumbersToFetch = true;
         while (moreNumbersToFetch) {
 
             try {
                 Integer number = numbersToUse.poll();
 
                 if (number == null) {
+                    Thread.currentThread().interrupt();
                     moreNumbersToFetch = false;
                 } else {
                     long fibNumber = fib(number);
@@ -47,5 +47,5 @@ public class FibernacciProducer implements Runnable {
             return fib(n - 1) + fib(n - 2);
         }
     }
-
+    
 }

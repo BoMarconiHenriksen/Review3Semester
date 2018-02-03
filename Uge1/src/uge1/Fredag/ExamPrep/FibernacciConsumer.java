@@ -3,16 +3,20 @@ package uge1.Fredag.ExamPrep;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Bo
  */
 public class FibernacciConsumer implements Runnable {
-    
-    int sumTotal;
+
+    int totalFibSum;
     List<Integer> fibernacciNumbers = new ArrayList();
     ArrayBlockingQueue<Integer> producedNumbers;
+    private volatile boolean moreNumbersToConsume = true;
 
     public FibernacciConsumer(ArrayBlockingQueue<Integer> producedNumbers) {
         this.producedNumbers = producedNumbers;
@@ -20,29 +24,27 @@ public class FibernacciConsumer implements Runnable {
 
     @Override
     public void run() {
-      boolean morenumbersToConsume = true;
-      int totalFibSum = 0;
-      Integer fibNumber;
-        
-      while(morenumbersToConsume) {
-          try {
-              fibNumber = producedNumbers.take();
-              
-              if(fibNumber != null) {
-                  System.out.println("Fibernacci number is: " + fibNumber);
-                  totalFibSum += fibNumber;
-                  System.out.println("Totalsummen er " + totalFibSum);
-              } else {
-                  morenumbersToConsume = false;
-              }
-          } catch (InterruptedException e) {
-              System.out.println("Fejl i consumer - metode run.");
-          }
-      }
-        
+        Integer fibNumber;
 
+        while (moreNumbersToConsume) {
+            try {
+                //Stopper programmet for tidligt så ændre timeouten
+                fibNumber = producedNumbers.poll(10, TimeUnit.SECONDS);
+                if (fibNumber != null) {
+                    System.out.println("Fibernacci number is: " + fibNumber);
+                    totalFibSum += fibNumber;
+                    //System.out.println("Totalsummen er " + totalFibSum);//Hvis der skal printes subtotal
+                } else {
+                    moreNumbersToConsume = false;
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Fejl i consumer!");
+            }
+        }
     }
-    
-    
-    
+
+    public int getTotalFibSum() {
+        return totalFibSum;
+    }
+
 }
