@@ -26,10 +26,10 @@ public class FibernacciProducer implements Runnable {
                 Integer number = numbersToUse.poll();
 
                 if (number == null) {
-                    Thread.currentThread().interrupt();
                     moreNumbersToFetch = false;
                 } else {
                     long fibNumber = fib(number);
+                    //Skal castes til Integer
                     Integer fibInt = (int) (long) fibNumber;
                     producedNumbers.put(fibInt);
                 }
@@ -40,6 +40,8 @@ public class FibernacciProducer implements Runnable {
 
     }
 
+    //Metoden er ikke synkroniseret, da det ikke har betydning
+    //for resultatet om n ændrer sig mellem tråde. 
     private long fib(long n) {
         if ((n == 0) || (n == 1)) {
             return n;

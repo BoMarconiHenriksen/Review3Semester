@@ -18,7 +18,7 @@ public class ExamPrepWeek1 {
         ArrayBlockingQueue<Integer> s1 = new ArrayBlockingQueue(12);
 
         //Tilføjer numre til s1
-        int[] numbersToProducer = {4, 5, 8, 12, 21, 22, 34, 35, 36, 37, 42};
+        int[] numbersToProducer = {42, 37, 36, 35, 34, 22, 21, 12, 8, 5, 4}; //{4, 5, 8, 12, 21, 22, 34, 35, 36, 37, 42};
 
         for (int i = 0; i < numbersToProducer.length; i++) {
             s1.add(numbersToProducer[i]);
