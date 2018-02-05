@@ -18,10 +18,8 @@ public class RandomNumberProducer implements Runnable {
         //Todo: Produce MAX_NUMBERS_TO_PRODUCE of random numbers between 0 and MAX_RANDOM and
         //      place the numbers in numbersProduced
 
-        int maxRandNumbersToProduce = 100;
-
         for (int i = 0; i < 100; i++) {
-            int random = (int) (Math.random() * maxRandNumbersToProduce + 1);
+            int random = (int) (Math.random() * MAX_NUMBERS_TO_PRODUCE + 1);
             try {
                 numbersProduced.put(random);
             } catch (InterruptedException e) {
